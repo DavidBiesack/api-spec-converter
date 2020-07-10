@@ -69,7 +69,7 @@ $ api-spec-converter --from=swagger_1 --to=swagger_2 --syntax=yaml --order=alpha
 ### Options
 * `from` - source format (see formats below)
 * `to` - desired format (see formats below)
-* `source` - Filename or URL for the source
+* `source` - Filename, URL, or JS object for the source
 ### Simple example:
 ```js
 var Converter = require('api-spec-converter');
@@ -122,8 +122,7 @@ Converter.convert({
         if (result.warnings)
           return console.error(JSON.stringify(warnings, null, 2));
 
-        console.log(converted.stringify());
-        FS.writeFileSync('swagger2.json', converted.stringify());
+        fs.writeFileSync('swagger2.json', converted.stringify());
       });
   });
 ```
@@ -170,9 +169,13 @@ Contributions are welcome and encouraged.
 Please add a test case if you're adding features or fixing bugs. To run the tests:
 
 ```bash
-WRITE_GOLDEN=true npm test
+npm test
 ```
 
+In case you need to override the expected outputs, due to a justified and verified change, run this:
+```bash
+WRITE_GOLDEN=true npm test
+```
 ### Releases
 ```
 npm run browserify

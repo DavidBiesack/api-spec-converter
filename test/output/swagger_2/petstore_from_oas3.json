@@ -2,9 +2,7 @@
   "basePath": "/api",
   "definitions": {
     "Animal": {
-      "discriminator": {
-        "propertyName": "type"
-      },
+      "discriminator": "type",
       "properties": {
         "id": {
           "type": "integer"
@@ -35,7 +33,9 @@
         {
           "$ref": "#/definitions/Animal"
         }
-      ]
+      ],
+      "x-discriminator-value": "Feline",
+      "x-ms-discriminator-value": "Feline"
     },
     "Category": {
       "properties": {
@@ -48,6 +48,26 @@
         }
       },
       "type": "object"
+    },
+    "Dog": {
+      "allOf": [
+        {
+          "properties": {
+            "chasesMailman": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "chasesMailman"
+          ],
+          "type": "object"
+        },
+        {
+          "$ref": "#/definitions/Animal"
+        }
+      ],
+      "x-discriminator-value": "Canine",
+      "x-ms-discriminator-value": "Canine"
     },
     "Order": {
       "properties": {
@@ -231,6 +251,7 @@
         "operationId": "findPetsByStatus",
         "parameters": [
           {
+            "collectionFormat": "csv",
             "description": "Status values that need to be considered for filter",
             "in": "query",
             "items": {
@@ -247,7 +268,10 @@
           }
         ],
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml",
+          "text/html",
+          "text/plain"
         ],
         "responses": {
           "200": {
@@ -276,6 +300,7 @@
         "operationId": "findPetsByTags",
         "parameters": [
           {
+            "collectionFormat": "multi",
             "description": "Tags to filter by",
             "in": "query",
             "items": {
@@ -287,7 +312,10 @@
           }
         ],
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml",
+          "text/html",
+          "text/plain"
         ],
         "responses": {
           "200": {
@@ -309,7 +337,7 @@
         ]
       }
     },
-    "/pet/uploadImage": {
+    "/pet/uploadFile": {
       "post": {
         "consumes": [
           "application/octet-stream"
@@ -317,9 +345,54 @@
         "operationId": "uploadFile",
         "parameters": [
           {
-            "in": "formData",
+            "in": "body",
             "name": "body",
-            "type": "file"
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          }
+        },
+        "security": [
+          {
+            "oauth2_accessCode": [
+              "write:pets",
+              "read:pets"
+            ]
+          },
+          {
+            "oauth2_implicit": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
+        "summary": "uploads a file",
+        "tags": [
+          "pet"
+        ]
+      }
+    },
+    "/pet/uploadImage": {
+      "post": {
+        "consumes": [
+          "image/jpeg",
+          "image/png"
+        ],
+        "operationId": "uploadImage",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -401,7 +474,10 @@
           }
         ],
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml",
+          "text/html",
+          "text/plain"
         ],
         "responses": {
           "200": {
@@ -424,6 +500,7 @@
       },
       "patch": {
         "consumes": [
+          "application/xml",
           "application/json"
         ],
         "operationId": "partialUpdate",
@@ -446,7 +523,8 @@
           }
         ],
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml"
         ],
         "responses": {
           "200": {
@@ -736,8 +814,24 @@
     },
     "/user/createWithList": {
       "post": {
+        "consumes": [
+          "application/json"
+        ],
         "operationId": "createUsersWithListInput",
-        "parameters": [],
+        "parameters": [
+          {
+            "description": "List of user object",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "No response was specified"
@@ -1011,32 +1105,40 @@
     "headers": {
       "X-RateLimit-Limit": {
         "description": "The number of allowed requests in the current period",
-        "format": "int32",
-        "type": "integer"
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
       },
       "X-RateLimit-Remaining": {
         "description": "The number of remaining requests in the current period",
-        "format": "int32",
-        "type": "integer"
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
       },
       "X-RateLimit-Reset": {
         "description": "The number of seconds left in the current period",
-        "format": "int32",
-        "type": "integer"
+        "schema": {
+          "format": "int32",
+          "type": "integer"
+        }
       }
     },
     "requestBodies": {
       "UserArray": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "type": "array"
+            }
+          }
+        },
         "description": "List of user object",
-        "in": "body",
-        "name": "body",
-        "required": true,
-        "schema": {
-          "items": {
-            "$ref": "#/definitions/User"
-          },
-          "type": "array"
-        }
+        "required": true
       }
     }
   }

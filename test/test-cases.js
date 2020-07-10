@@ -59,6 +59,12 @@ TestCases.push({
 })
 
 TestCases.push({
+  in: {format: 'openapi_3', file: 'deprecated.yml'},
+  out: {format: 'swagger_2', file: 'deprecated.yml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
   in: {format: 'swagger_2', file: 'petstore.json'},
   out: {format: 'openapi_3', file: 'petstore2.json'}
 })
@@ -84,6 +90,16 @@ TestCases.push({
 })
 
 TestCases.push({
+  in: {format: 'openapi_3', file: 'servers.yml'},
+  out: {format: 'swagger_2', file: 'servers.json'}
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'slash_ref.yml'},
+  out: {format: 'swagger_2', file: 'slash_ref.json'}
+})
+
+TestCases.push({
   in: {format: 'openapi_3', file: 'has_external_ref.json'},
   out: {format: 'swagger_2', file: 'has_external_ref.json'},
   skipBrowser: true,
@@ -92,6 +108,42 @@ TestCases.push({
 TestCases.push({
   in: {format: 'openapi_3', file: 'yaml_with_ref.yml'},
   out: {format: 'swagger_2', file: 'yaml_with_ref.yml', syntax: 'yaml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'common_params.json'},
+  out: {format: 'swagger_2', file: 'common_params.json'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'form_param.yml'},
+  out: {format: 'swagger_2', file: 'form_param.yml', syntax: 'yaml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'nullable.yml'},
+  out: {format: 'swagger_2', file: 'nullable.yml', syntax: 'yaml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'nested_oneof.yml'},
+  out: {format: 'swagger_2', file: 'nested_oneof.yml', syntax: 'yaml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'request_response_ref.yml'},
+  out: {format: 'swagger_2', file: 'request_response_ref.yml', syntax: 'yaml'},
+  skipBrowser: true,
+})
+
+TestCases.push({
+  in: {format: 'openapi_3', file: 'multiple_ref.yml'},
+  out: {format: 'swagger_2', file: 'multiple_ref.json', syntax: 'json'},
   skipBrowser: true,
 })
 

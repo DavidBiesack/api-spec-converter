@@ -20,6 +20,14 @@
             "required": true,
             "type": "number",
             "x-example": "1"
+          },
+          {
+            "description": "e.g. text/plain",
+            "in": "header",
+            "name": "Accept",
+            "required": false,
+            "type": "string",
+            "x-example": "text/plain"
           }
         ],
         "produces": [
@@ -93,6 +101,13 @@
             "name": "limit",
             "required": false,
             "type": "number"
+          },
+          {
+            "description": "Which page of results to return",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer"
           }
         ],
         "produces": [
@@ -127,5 +142,12 @@
       }
     }
   },
-  "swagger": "2.0"
+  "securityDefinitions": {},
+  "swagger": "2.0",
+  "tags": [
+    {
+      "description": "Group of all messages-related resources.",
+      "name": "Messages"
+    }
+  ]
 }

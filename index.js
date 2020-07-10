@@ -12,6 +12,9 @@ Converter.BaseFormat = require('./lib/base_format.js');
 Converter.ResourceReaders = Util.resourceReaders;
 
 Converter.getSpec = function (source, format, callback) {
+  if (!Formats.hasOwnProperty(format)) {
+    throw new Error('Unknow format ' + format + ', you might have forgotten installing an optional dependency');
+  }
   var spec = new Formats[format]();
   return spec.resolveResources(source)
     .return(spec)
@@ -30,6 +33,6 @@ Converter.getFormatName = function (name, version) {
 
 Converter.convert = function(options, callback) {
   return Converter.getSpec(options.source, options.from)
-    .then(fromSpec => fromSpec.convertTo(options.to))
+    .then(fromSpec => fromSpec.convertTo(options.to, options.passthrough))
     .asCallback(callback);
 }

@@ -42,7 +42,11 @@
     "schemas": {
       "Animal": {
         "discriminator": {
-          "propertyName": "type"
+          "propertyName": "type",
+          "mapping": {
+            "Canine": "Dog",
+            "Feline": "#/components/schemas/Cat"
+          }
         },
         "properties": {
           "id": {
@@ -68,6 +72,24 @@
             },
             "required": [
               "likesMilk"
+            ],
+            "type": "object"
+          },
+          {
+            "$ref": "#/components/schemas/Animal"
+          }
+        ]
+      },
+      "Dog": {
+        "allOf": [
+          {
+            "properties": {
+              "chasesMailman": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "chasesMailman"
             ],
             "type": "object"
           },
@@ -303,6 +325,7 @@
             "in": "query",
             "name": "status",
             "required": true,
+            "style": "simple",
             "schema": {
               "items": {
                 "enum": [
@@ -431,12 +454,56 @@
         ]
       }
     },
-    "/pet/uploadImage": {
+    "/pet/uploadFile": {
       "post": {
         "operationId": "uploadFile",
         "requestBody": {
           "content": {
             "application/octet-stream": {
+              "schema": {
+                "format": "binary",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "No response was specified"
+          }
+        },
+        "security": [
+          {
+            "oauth2_accessCode": [
+              "write:pets",
+              "read:pets"
+            ]
+          },
+          {
+            "oauth2_implicit": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
+        "summary": "uploads a file",
+        "tags": [
+          "pet"
+        ]
+      }
+    },
+    "/pet/uploadImage": {
+      "post": {
+        "operationId": "uploadImage",
+        "requestBody": {
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "format": "binary",
+                "type": "string"
+              }
+            },
+            "image/png": {
               "schema": {
                 "format": "binary",
                 "type": "string"

@@ -25,6 +25,16 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "description": "e.g. text/plain",
+            "example": "text/plain",
+            "in": "header",
+            "name": "Accept",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -106,6 +116,15 @@
               "default": 20,
               "type": "number"
             }
+          },
+          {
+            "description": "Which page of results to return",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -143,5 +162,11 @@
       }
     }
   },
-  "servers": []
+  "servers": [],
+  "tags": [
+    {
+      "description": "Group of all messages-related resources.",
+      "name": "Messages"
+    }
+  ]
 }
